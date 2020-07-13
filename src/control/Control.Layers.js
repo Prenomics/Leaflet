@@ -74,7 +74,9 @@ export var Layers = Control.extend({
 		// By default, it sorts layers alphabetically by their name.
 		sortFunction: function (layerA, layerB, nameA, nameB) {
 			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
-		}
+		},
+
+		layersControlWithRadio: false,
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -322,10 +324,14 @@ export var Layers = Control.extend({
 		    input;
 
 		if (obj.overlay) {
-			input = document.createElement('input');
-			input.type = 'checkbox';
-			input.className = 'leaflet-control-layers-selector';
-			input.defaultChecked = checked;
+			if (this.options.layersControlWithRadio) {
+				input = this._createRadioElement('leaflet-control-layers-selector', checked);
+			} else {
+				input = document.createElement('input');
+				input.type = 'checkbox';
+				input.className = 'leaflet-control-layers-selector';
+				input.defaultChecked = checked;
+			}
 		} else {
 			input = this._createRadioElement('leaflet-base-layers_' + Util.stamp(this), checked);
 		}
